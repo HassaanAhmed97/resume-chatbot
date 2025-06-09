@@ -20,7 +20,7 @@ const ChatInterface = () => {
     setInputText('');
 
     try {
-      const response = await fetch('https://hassaan-portfolio-api.vercel.app/api/chat', {
+      const response = await fetch('https://resume-chatbot-three.vercel.app/api/chat', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
