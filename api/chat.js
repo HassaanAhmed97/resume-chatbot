@@ -1,10 +1,10 @@
 export default async function handler(req, res) {
-  // Enable CORS
-  res.setHeader('Access-Control-Allow-Credentials', true);
+  // Set CORS headers
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
 
+  // Handle preflight requests
   if (req.method === 'OPTIONS') {
     res.status(200).end();
     return;
@@ -14,111 +14,24 @@ export default async function handler(req, res) {
     return res.status(405).json({ error: 'Method not allowed' });
   }
 
-  const { userInput } = req.body;
-
-  if (!userInput) {
-    return res.status(400).json({ error: 'User input is required' });
-  }
-
-  const prompt = `You are an AI assistant evaluating how well a candidate fits a given role or query based on their background. Below is the candidate's information, followed by the user's query. Assess the fit and provide a detailed response explaining why the candidate is a good match (or not) for the role or query. for filler queries like "hello", thank you,", etc. respond accordingly.
-
-### Candidate Information
-**Name**: Hassaan Ahmed  
-**Email**: hassaan.ria297@gmail.com  
-**Phone**: +92 321 1811843  
-**LinkedIn**: https://www.linkedin.com/in/hassaanriazahmed/  
-**Portfolio**: https://hassaanahmed.designfolio.me/
-
-**Summary**:  
-A Senior Product Manager with over 5 years of experience in AI product development, Agile methodologies, and data-driven enterprise solutions. 5+ years of building and managing programs related to B2C and B2B centric product development and process optimization. I also build AI Agents to help you increase your efficiency using no-code platforms.
-
-I've built my career as a product leader in fast-moving e-commerce and payments businesses. Currently, I'm a Senior Product Manager at Beam AI, where I've driven AI-powered user-journey solutions that cut delivery timelines by 20% and generated over $150K in annual efficiency gains. I've also led cross-functional teams—engineers, designers, sales teams —to design and ship products and features.
-
-At Beam AI (Sr. Product Manager), I lead two core domains:
-1. AI‑driven workflow automation—designing the framework that turns business rules into executable AI pipelines.
-2. Platform roadmap & strategy—prioritizing and sequencing features to maximize reliability, scalability, and monetization.
-
-Three flagship projects I've owned at Beam:
-1. Subscription Billing Module (in progress): a token‑based, tiered‑pricing engine with invoicing APIs and automated payment reconciliation.
-2. Conditional Execution Engine: an AI‑orchestration service that evaluates runtime conditions and triggers appropriate workflows, reducing manual interventions by 27%.
-3. Beam V2 Platform Launch: a ground‑up rewrite of our core platform that has enabled a better overall user journey and helped make the platform be more self-service
-
-At Swvl, my role was more on program level, where I was not only leading product development to productize operational practices, but also led a cross functional push to standardize processes by building and introducing products that resolve it on a large scale
-
-Before that, at Daraz (an Alibaba company), I focused on the post-transaction experience: streamlining workflows to boost purchase visibility by 15%, doubling actionable customer feedback, and raising post-purchase satisfaction by 5%. My work has given me deep expertise in order-management systems, real-time monitoring, and checkout-to-settlement flows—all critical for delivering seamless, reliable experiences.
-
-**Skills**:  
-- AI Product Development  
-- Agile Methodologies  
-- Roadmap Planning  
-- Data Analytics (Power BI, SQL, Airtable)  
-- Enterprise Solutions  
-- Stakeholder Management  
-- Technical Collaboration (APIs, System Architecture)  
-- A/B Testing  
-- Process Automation  
-- Cohort Analysis  
-- Program Management  
-- Impact Analysis  
-
-**Experience**:  
-
-Beam AI (Dec 2022 - Present)
-Sr. Product Manager
-- Spearheaded AI-driven digital transformation projects, including predictive analytics and workflow automation, using Agile
-methodologies to reduce client turnaround time by 20% and deliver scalable payment acceptance solutions for enterprises.
-- Enhanced platform scalability for 5 clients, securing $ 100 K+ ARR and improving retention by 80% through user insights.
-- Drove platform scalability for SaaS solutions, enabling seamless adoption of payment gateway integrations, securing $100K+
-ARR and boosting client retention by 80%.
-- Optimized user journeys for billing and payment solutions, leveraging A/B testing and Mixpanel analytics to improve user
-subscriptions and payment process, increasing success rates by 12% and reducing churn by 5%.
-- Employed agile methodologies to ensure rapid iteration and continuous delivery for platform refactoring, improving product
-efficiency by 18% and reducing manual intervention by 27%.
-- Partnered with engineering teams to define API integrations and system architecture for AI platform enhancements, improving
-scalability by 15%.
-- Developed a solution onboarding strategy to address client pain points in platform adoption, increasing onboarding success rates
-by 12% through user journey optimization and performance tracking.
-
-Consulting Experience (Nov 2022 – Present)
-- Shaped product roadmap for a seed-stage AI logistics startup, evangelizing technology to secure a $50M B2B market
-opportunity.
-- Prepared an e-commerce startup with product discovery and product roadmap development for a $40 M Series A1 fundraising.
-- Led consulting projects across ecommerce, tourism, logistics, and aviation sector to develop market entry strategies.
-- Assisted a tech startup in market feasibility analysis in order to pivot from its existing business model and coming up with a
-more sustainable business model aimed at targeting a $20M market opportunity.
-
-Swvl Feb (2022 – Nov 2022)
-Program Manager - Global Operations & Experience
-- Developed AI-driven fleet optimization tools, improving operational efficiency by 30% and supporting B2B scalability.
-- Developed performance-based driver policies, increasing payout efficiency by 17% while maintaining service availability.
-- Led expansion into Tier 2 cities, scaling operations by 15%, increasing fleet availability, and reducing downtime.
-- Executed fleet uptime and predictive maintenance strategies, reducing vehicle breakdown incidents by 22%.
-- Enhanced customer experience through data-driven insights, boosting Net Promoter Score (NPS) by 5 percentage points.
-
-Daraz, Alibaba Group (Oct 2020 – Feb 2022)
-Product Manager - Customer & Seller Experience
-- Partnered with sales teams to craft value propositions for 500+ merchants in Pakistan, enabling $200K in transaction growth by
-optimizing onboarding for digital payment adoption in Tier 2+ markets.
-- Led localization initiatives, launching a multi-language platform variant that expanded user adoption by 20% in Tier 2+ markets.
-- Developed chatbot for marketplace support, increasing resolution rates by 7% and handling 50K+ monthly interactions.
-
-Khaadi (July 2019 – Oct 2020)
-Management Trainee
-- Optimized in-store operations, increasing stock liquidation rates by 10%, saving $10K+ in inventory costs.
-- Launched a new product category, contributing 5% to overall sales and 7% to total product assortment.
-- Redesigned store layouts, leading to an 8% boost in conversion rates by leveraging behavioral shopping insights.
-
-Education
-July 2019 – Oct 2020
-- PMP, Project Management Professional Project Management Institute Oct, 2024
-- MBA, Master of Business Administration Institute of Business Administration (IBA), Karachi Dec, 2023
-- BBA, Bachelor of Business Administration Institute of Business Administration (IBA), Karachi  May, 2019
-
-### User Query  
-The user has provided the following query or role description to evaluate your fit:  
-${userInput}`;
-
   try {
+    console.log('Request received:', req.body);
+    console.log('OpenAI API Key exists:', !!process.env.OPENAI_API_KEY);
+    console.log('OpenAI API Key starts with sk-:', process.env.OPENAI_API_KEY?.startsWith('sk-'));
+
+    const { message } = req.body;
+
+    if (!message) {
+      return res.status(400).json({ error: 'Message is required' });
+    }
+
+    if (!process.env.OPENAI_API_KEY) {
+      console.error('OpenAI API key is missing');
+      return res.status(500).json({ error: 'OpenAI API key not configured' });
+    }
+
+    console.log('Making request to OpenAI...');
+
     const response = await fetch('https://api.openai.com/v1/chat/completions', {
       method: 'POST',
       headers: {
@@ -129,27 +42,95 @@ ${userInput}`;
         model: 'gpt-3.5-turbo',
         messages: [
           {
+            role: 'system',
+            content: `You are an AI assistant helping people learn about Hassaan Ahmed's professional background. Here's his information:
+
+Name: Hassaan Ahmed
+Contact: hassaanriazahmed@gmail.com | +92 335 3399897 | LinkedIn: https://www.linkedin.com/in/hassaanriazahmed/ | Portfolio: https://hassaanahmed.designfolio.me/
+
+SUMMARY:
+Senior Product Manager with 5+ years of experience in AI product development, Agile methodologies, and data-driven solutions. Proven track record of launching innovative products, optimizing user experiences, and driving revenue growth through strategic product initiatives.
+
+PROFESSIONAL EXPERIENCE:
+
+Senior Product Manager | Beam AI | June 2023 – Present
+• Led the development of a Pre-created Generative AI Workflow Library, reducing user setup time by 40% and increasing monthly active users by 25%
+• Spearheaded the Product Discovery and Research initiative, conducting 50+ user interviews to identify pain points and feature gaps
+• Collaborated with engineering teams to implement Agile methodologies, resulting in 30% faster product delivery cycles
+• Managed cross-functional teams of 8+ members, ensuring alignment between product vision and business objectives
+
+Product Manager | Swvl | February 2022 – May 2023
+• Developed and launched Swvl FleetOps, a comprehensive fleet management system that improved operational efficiency by 35%
+• Conducted extensive market research and competitive analysis, leading to strategic pivots that increased user retention by 20%
+• Implemented data analytics frameworks to track KPIs, resulting in data-driven decision making across the product team
+• Coordinated with stakeholders across 4 different markets (Egypt, Pakistan, UAE, Kenya) to ensure product-market fit
+
+Assistant Product Manager | Daraz | June 2021 – January 2022
+• Contributed to the Multi-Language Marketplace Expansion project, enabling localization for 3 new languages and increasing market penetration by 15%
+• Assisted in the development of recommendation algorithms that boosted cross-selling revenue by 18%
+• Performed A/B testing on 10+ product features, optimizing user experience and conversion rates
+• Supported the launch of 5 new product categories, contributing to a 12% increase in overall GMV
+
+Product Associate | Khaadi | August 2020 – May 2021
+• Supported the Digital Transformation initiative, helping migrate 60% of offline processes to digital platforms
+• Assisted in the development of inventory management systems that reduced stockouts by 25%
+• Conducted user research and usability testing for e-commerce platform improvements
+• Contributed to the launch of omnichannel customer experience features
+
+Freelance Product Consultant | Various Clients | 2019 – 2020
+• Provided product strategy consultation for 5+ startups in fintech and e-commerce sectors
+• Helped clients define product roadmaps and go-to-market strategies
+• Conducted market analysis and competitive research for product positioning
+
+CORE SKILLS:
+• AI Product Development
+• Agile Methodologies (Scrum, Kanban)
+• Data Analytics & KPI Tracking
+• User Research & Testing
+• Cross-functional Team Leadership
+• Product Strategy & Roadmapping
+• Market Research & Analysis
+• Stakeholder Management
+
+EDUCATION:
+• Project Management Professional (PMP) | Project Management Institute | 2023
+• Master of Business Administration (MBA) | Institute of Business Administration (IBA), Karachi | 2020
+• Bachelor of Business Administration (BBA) | Institute of Business Administration (IBA), Karachi | 2018
+
+Please answer questions about Hassaan's background, experience, skills, and how he might fit various roles. If someone asks non-professional questions or says things like "hello" or "hi", politely redirect them to ask about Hassaan's professional background.
+
+For role-fit questions, evaluate how Hassaan's experience aligns with the requirements and provide specific examples from his background.`
+          },
+          {
             role: 'user',
-            content: prompt
+            content: message
           }
         ],
-        max_tokens: 800,
+        max_tokens: 500,
         temperature: 0.7,
       }),
     });
 
+    console.log('OpenAI response status:', response.status);
+
     if (!response.ok) {
-      throw new Error(`OpenAI API error: ${response.status}`);
+      const errorText = await response.text();
+      console.error('OpenAI API error:', response.status, errorText);
+      throw new Error(`OpenAI API error: ${response.status} - ${errorText}`);
     }
 
     const data = await response.json();
-    const aiResponse = data.choices[0].message.content;
+    console.log('OpenAI response received successfully');
+    
+    const reply = data.choices[0].message.content;
 
-    res.status(200).json({ response: aiResponse });
+    res.status(200).json({ reply });
   } catch (error) {
-    console.error('Error calling OpenAI API:', error);
+    console.error('Error details:', error);
     res.status(500).json({ 
-      error: 'Failed to process your request. Please try again later.' 
+      error: 'Internal server error', 
+      details: error.message,
+      stack: error.stack 
     });
   }
 }
