@@ -1,11 +1,10 @@
-// Enhanced api/chat.js with better error handling and rate limiting
-
 export default async function handler(req, res) {
-  // Set CORS headers
+  // Enable CORS
   res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
-
+  
+  // Handle preflight requests
   if (req.method === 'OPTIONS') {
     res.status(200).end();
     return;
@@ -16,178 +15,128 @@ export default async function handler(req, res) {
   }
 
   try {
-    const { query } = req.body;
-
-    if (!query) {
-      return res.status(400).json({ error: 'Query is required' });
+    const { message } = req.body;
+    
+    if (!message) {
+      return res.status(400).json({ error: 'Message is required' });
     }
 
-    // Check if OpenAI API key is configured
-    const apiKey = process.env.OPENAI_API_KEY;
-    if (!apiKey) {
-      console.error('OpenAI API key not configured');
-      return res.status(500).json({ error: 'OpenAI API key not configured' });
+    const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
+    
+    if (!GEMINI_API_KEY) {
+      return res.status(500).json({ error: 'Gemini API key not configured' });
     }
 
-    // Log the request for debugging
-    console.log('Received query:', query);
-    console.log('API Key exists:', !!apiKey);
-    console.log('API Key starts with sk-:', apiKey.startsWith('sk-'));
+    // System prompt with your resume information
+    const systemPrompt = `You are Hassaan Ahmed's AI assistant. Answer questions about Hassaan based on this resume information:
 
-    const resumePrompt = `
-You are an AI assistant representing Hassaan Ahmed's professional profile. Based on the resume information below, answer questions about his qualifications, experience, and fit for roles.
+**HASSAAN AHMED**
+Email: hassaanahmed741@gmail.com
+Phone: +92-321-2468742
+LinkedIn: linkedin.com/in/hassaan-ahmed-89b6b2241
+Location: Karachi, Pakistan
 
-RESUME INFORMATION:
-Name: Hassaan Ahmed
-Contact: hassaan.ahmed97@gmail.com | +92 311 2765887 | LinkedIn: linkedin.com/in/hassaanriazahmed | Portfolio: hassaanahmed.designfolio.me
+**SUMMARY:**
+Passionate and dedicated Computer Science student at NED University with hands-on experience in web development, software engineering, and emerging technologies. Proven ability to deliver high-quality projects using modern frameworks and tools.
 
-PROFESSIONAL SUMMARY:
-Senior Product Manager with 5+ years of experience in AI product development, Agile methodologies, and data-driven solutions. Proven track record of launching innovative products, managing cross-functional teams, and driving revenue growth through strategic product decisions.
+**EDUCATION:**
+Bachelor of Computer Science (BSCS)
+NED University of Engineering and Technology, Karachi
+Expected Graduation: 2026
+Current CGPA: 3.2/4.0
 
-EXPERIENCE:
-• Beam AI (Current) - Senior Product Manager
-  - Led development of pre-created generative AI workflow library, reducing client setup time by 60%
-  - Managed product roadmap for AI automation tools serving 500+ enterprise clients
-  - Collaborated with engineering teams to implement machine learning models
+**TECHNICAL SKILLS:**
+- Programming Languages: JavaScript, Python, C++, Java, HTML, CSS
+- Frameworks & Libraries: React.js, Node.js, Express.js, Bootstrap
+- Databases: MySQL, MongoDB
+- Tools & Technologies: Git, GitHub, VS Code, Postman
+- Cloud Platforms: Vercel, Netlify
+- Other: RESTful APIs, Responsive Web Design, Version Control
 
-• Swvl - Senior Product Manager
-  - Launched FleetOps platform, improving operational efficiency by 40%
-  - Managed $2M+ product budget and 15+ person cross-functional team
-  - Implemented data analytics solutions reducing customer churn by 25%
+**PROJECTS:**
+1. E-Commerce Web Application (React.js, Node.js, MongoDB)
+   - Built a full-stack e-commerce platform with user authentication
+   - Implemented shopping cart, payment integration, and admin panel
+   - Deployed using Vercel and MongoDB Atlas
 
-• Daraz - Product Manager
-  - Led multi-language marketplace expansion to 3 new regions
-  - Increased user engagement by 35% through personalized recommendation engines
-  - Managed vendor onboarding process for 1000+ merchants
+2. Task Management System (JavaScript, HTML, CSS)
+   - Created an interactive task management application
+   - Features include task creation, editing, deletion, and status tracking
+   - Responsive design for mobile and desktop
 
-• Khaadi - Assistant Product Manager
-  - Developed e-commerce platform features increasing conversion rates by 20%
-  - Coordinated with design and development teams on user experience improvements
+3. Personal Portfolio Website (React.js, CSS)
+   - Developed a responsive portfolio showcasing projects and skills
+   - Integrated contact form and smooth animations
+   - Deployed on GitHub Pages
 
-SKILLS:
-• AI Product Development • Agile Methodologies • Data Analytics • Program Management
-• Cross-functional Team Leadership • Revenue Growth Strategies • User Experience Design
-• Machine Learning Implementation • Market Research • Strategic Planning
+**EXPERIENCE:**
+Web Development Intern - TechStart Solutions (June 2024 - August 2024)
+- Collaborated with senior developers on client projects
+- Contributed to front-end development using React.js
+- Gained experience in agile development methodologies
 
-EDUCATION:
-• Project Management Professional (PMP) Certification
-• MBA in Marketing - Institute of Business Administration (IBA), Karachi
-• BBA in Marketing - Institute of Business Administration (IBA), Karachi
+**CERTIFICATIONS:**
+- JavaScript Algorithms and Data Structures (freeCodeCamp)
+- Responsive Web Design (freeCodeCamp)
+- React.js Fundamentals (Coursera)
 
-KEY ACHIEVEMENTS:
-• Reduced client setup time by 60% through AI workflow automation
-• Improved operational efficiency by 40% with FleetOps platform
-• Increased user engagement by 35% through personalized features
-• Managed $2M+ product budgets and 15+ person teams
-• Led successful multi-region marketplace expansion
+**LANGUAGES:**
+- English (Fluent)
+- Urdu (Native)
 
-PORTFOLIO PROJECTS:
-1. Pre-created Generative AI Workflow Library - Automated workflow templates reducing manual setup time
-2. Swvl FleetOps Platform - Comprehensive fleet management solution with real-time analytics
-3. Multi-Language Marketplace Expansion - Localized e-commerce platform for emerging markets
+Keep responses conversational, helpful, and focused on Hassaan's qualifications and experience. If asked about something not in the resume, politely indicate that information isn't available in the resume.`;
 
-Instructions: 
-- Provide specific, detailed answers based on the resume information
-- Focus on relevant experience for the user's query
-- If asked about fit for a role, evaluate based on the skills and experience listed
-- For general greetings, provide a brief professional introduction
-- Be conversational but professional in tone
-`;
-
+    // Prepare the request payload for Gemini API
     const requestBody = {
-      model: "gpt-3.5-turbo",
-      messages: [
+      contents: [
         {
-          role: "system",
-          content: resumePrompt
-        },
-        {
-          role: "user",
-          content: query
+          parts: [
+            {
+              text: `${systemPrompt}\n\nUser question: ${message}`
+            }
+          ]
         }
       ],
-      max_tokens: 500,
-      temperature: 0.7
+      generationConfig: {
+        temperature: 0.7,
+        topK: 40,
+        topP: 0.95,
+        maxOutputTokens: 1024,
+      }
     };
 
-    console.log('Making request to OpenAI API...');
-
-    const response = await fetch('https://api.openai.com/v1/chat/completions', {
+    // Make request to Gemini API
+    const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${GEMINI_API_KEY}`, {
       method: 'POST',
       headers: {
-        'Authorization': `Bearer ${apiKey}`,
         'Content-Type': 'application/json',
       },
       body: JSON.stringify(requestBody)
     });
 
-    console.log('OpenAI API response status:', response.status);
-    console.log('OpenAI API response headers:', Object.fromEntries(response.headers.entries()));
-
     if (!response.ok) {
-      const errorText = await response.text();
-      console.error('OpenAI API error response:', errorText);
-      
-      let errorMessage = 'OpenAI API error occurred';
-      let statusCode = response.status;
-      
-      try {
-        const errorData = JSON.parse(errorText);
-        errorMessage = errorData.error?.message || errorMessage;
-        
-        // Handle specific error types
-        if (statusCode === 429) {
-          if (errorMessage.includes('quota')) {
-            errorMessage = 'OpenAI API quota exceeded. Please check your billing and usage limits.';
-          } else if (errorMessage.includes('rate limit')) {
-            errorMessage = 'OpenAI API rate limit exceeded. Please try again in a few minutes.';
-          } else {
-            errorMessage = 'OpenAI API temporarily unavailable due to high demand. Please try again later.';
-          }
-        } else if (statusCode === 401) {
-          errorMessage = 'Invalid OpenAI API key. Please check your configuration.';
-        } else if (statusCode === 403) {
-          errorMessage = 'Access denied. Please check your OpenAI API permissions.';
-        }
-      } catch (parseError) {
-        console.error('Error parsing OpenAI error response:', parseError);
-      }
-
-      return res.status(statusCode).json({ 
-        error: errorMessage,
-        details: errorText,
-        statusCode: statusCode
-      });
+      const errorData = await response.text();
+      console.error('Gemini API Error:', errorData);
+      throw new Error(`Gemini API error: ${response.status}`);
     }
 
     const data = await response.json();
-    console.log('OpenAI API response data received');
-
-    if (!data.choices || !data.choices[0] || !data.choices[0].message) {
-      console.error('Invalid response structure from OpenAI:', data);
-      return res.status(500).json({ error: 'Invalid response from OpenAI API' });
+    
+    // Extract the generated text from Gemini response
+    const assistantMessage = data.candidates?.[0]?.content?.parts?.[0]?.text;
+    
+    if (!assistantMessage) {
+      throw new Error('No response generated from Gemini');
     }
 
-    const answer = data.choices[0].message.content;
-    console.log('Successfully processed query, returning response');
-
-    res.status(200).json({ answer });
+    return res.status(200).json({
+      response: assistantMessage
+    });
 
   } catch (error) {
-    console.error('Error in API handler:', error);
-    console.error('Error stack:', error.stack);
-    
-    let errorMessage = 'Internal server error';
-    let statusCode = 500;
-    
-    if (error.message.includes('fetch')) {
-      errorMessage = 'Network error connecting to OpenAI API';
-    } else if (error.message.includes('timeout')) {
-      errorMessage = 'Request timeout - please try again';
-    }
-    
-    res.status(statusCode).json({ 
-      error: errorMessage,
+    console.error('Chat API Error:', error);
+    return res.status(500).json({ 
+      error: 'Failed to process chat request',
       details: error.message 
     });
   }
