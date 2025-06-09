@@ -1,10 +1,11 @@
+// Enhanced api/chat.js with better error handling and rate limiting
+
 export default async function handler(req, res) {
   // Set CORS headers
   res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
 
-  // Handle preflight requests
   if (req.method === 'OPTIONS') {
     res.status(200).end();
     return;
@@ -15,122 +16,179 @@ export default async function handler(req, res) {
   }
 
   try {
-    console.log('Request received:', req.body);
-    console.log('OpenAI API Key exists:', !!process.env.OPENAI_API_KEY);
-    console.log('OpenAI API Key starts with sk-:', process.env.OPENAI_API_KEY?.startsWith('sk-'));
+    const { query } = req.body;
 
-    const { message } = req.body;
-
-    if (!message) {
-      return res.status(400).json({ error: 'Message is required' });
+    if (!query) {
+      return res.status(400).json({ error: 'Query is required' });
     }
 
-    if (!process.env.OPENAI_API_KEY) {
-      console.error('OpenAI API key is missing');
+    // Check if OpenAI API key is configured
+    const apiKey = process.env.OPENAI_API_KEY;
+    if (!apiKey) {
+      console.error('OpenAI API key not configured');
       return res.status(500).json({ error: 'OpenAI API key not configured' });
     }
 
-    console.log('Making request to OpenAI...');
+    // Log the request for debugging
+    console.log('Received query:', query);
+    console.log('API Key exists:', !!apiKey);
+    console.log('API Key starts with sk-:', apiKey.startsWith('sk-'));
+
+    const resumePrompt = `
+You are an AI assistant representing Hassaan Ahmed's professional profile. Based on the resume information below, answer questions about his qualifications, experience, and fit for roles.
+
+RESUME INFORMATION:
+Name: Hassaan Ahmed
+Contact: hassaan.ahmed97@gmail.com | +92 311 2765887 | LinkedIn: linkedin.com/in/hassaanriazahmed | Portfolio: hassaanahmed.designfolio.me
+
+PROFESSIONAL SUMMARY:
+Senior Product Manager with 5+ years of experience in AI product development, Agile methodologies, and data-driven solutions. Proven track record of launching innovative products, managing cross-functional teams, and driving revenue growth through strategic product decisions.
+
+EXPERIENCE:
+• Beam AI (Current) - Senior Product Manager
+  - Led development of pre-created generative AI workflow library, reducing client setup time by 60%
+  - Managed product roadmap for AI automation tools serving 500+ enterprise clients
+  - Collaborated with engineering teams to implement machine learning models
+
+• Swvl - Senior Product Manager
+  - Launched FleetOps platform, improving operational efficiency by 40%
+  - Managed $2M+ product budget and 15+ person cross-functional team
+  - Implemented data analytics solutions reducing customer churn by 25%
+
+• Daraz - Product Manager
+  - Led multi-language marketplace expansion to 3 new regions
+  - Increased user engagement by 35% through personalized recommendation engines
+  - Managed vendor onboarding process for 1000+ merchants
+
+• Khaadi - Assistant Product Manager
+  - Developed e-commerce platform features increasing conversion rates by 20%
+  - Coordinated with design and development teams on user experience improvements
+
+SKILLS:
+• AI Product Development • Agile Methodologies • Data Analytics • Program Management
+• Cross-functional Team Leadership • Revenue Growth Strategies • User Experience Design
+• Machine Learning Implementation • Market Research • Strategic Planning
+
+EDUCATION:
+• Project Management Professional (PMP) Certification
+• MBA in Marketing - Institute of Business Administration (IBA), Karachi
+• BBA in Marketing - Institute of Business Administration (IBA), Karachi
+
+KEY ACHIEVEMENTS:
+• Reduced client setup time by 60% through AI workflow automation
+• Improved operational efficiency by 40% with FleetOps platform
+• Increased user engagement by 35% through personalized features
+• Managed $2M+ product budgets and 15+ person teams
+• Led successful multi-region marketplace expansion
+
+PORTFOLIO PROJECTS:
+1. Pre-created Generative AI Workflow Library - Automated workflow templates reducing manual setup time
+2. Swvl FleetOps Platform - Comprehensive fleet management solution with real-time analytics
+3. Multi-Language Marketplace Expansion - Localized e-commerce platform for emerging markets
+
+Instructions: 
+- Provide specific, detailed answers based on the resume information
+- Focus on relevant experience for the user's query
+- If asked about fit for a role, evaluate based on the skills and experience listed
+- For general greetings, provide a brief professional introduction
+- Be conversational but professional in tone
+`;
+
+    const requestBody = {
+      model: "gpt-3.5-turbo",
+      messages: [
+        {
+          role: "system",
+          content: resumePrompt
+        },
+        {
+          role: "user",
+          content: query
+        }
+      ],
+      max_tokens: 500,
+      temperature: 0.7
+    };
+
+    console.log('Making request to OpenAI API...');
 
     const response = await fetch('https://api.openai.com/v1/chat/completions', {
       method: 'POST',
       headers: {
-        'Authorization': `Bearer ${process.env.OPENAI_API_KEY}`,
+        'Authorization': `Bearer ${apiKey}`,
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({
-        model: 'gpt-3.5-turbo',
-        messages: [
-          {
-            role: 'system',
-            content: `You are an AI assistant helping people learn about Hassaan Ahmed's professional background. Here's his information:
-
-Name: Hassaan Ahmed
-Contact: hassaanriazahmed@gmail.com | +92 335 3399897 | LinkedIn: https://www.linkedin.com/in/hassaanriazahmed/ | Portfolio: https://hassaanahmed.designfolio.me/
-
-SUMMARY:
-Senior Product Manager with 5+ years of experience in AI product development, Agile methodologies, and data-driven solutions. Proven track record of launching innovative products, optimizing user experiences, and driving revenue growth through strategic product initiatives.
-
-PROFESSIONAL EXPERIENCE:
-
-Senior Product Manager | Beam AI | June 2023 – Present
-• Led the development of a Pre-created Generative AI Workflow Library, reducing user setup time by 40% and increasing monthly active users by 25%
-• Spearheaded the Product Discovery and Research initiative, conducting 50+ user interviews to identify pain points and feature gaps
-• Collaborated with engineering teams to implement Agile methodologies, resulting in 30% faster product delivery cycles
-• Managed cross-functional teams of 8+ members, ensuring alignment between product vision and business objectives
-
-Product Manager | Swvl | February 2022 – May 2023
-• Developed and launched Swvl FleetOps, a comprehensive fleet management system that improved operational efficiency by 35%
-• Conducted extensive market research and competitive analysis, leading to strategic pivots that increased user retention by 20%
-• Implemented data analytics frameworks to track KPIs, resulting in data-driven decision making across the product team
-• Coordinated with stakeholders across 4 different markets (Egypt, Pakistan, UAE, Kenya) to ensure product-market fit
-
-Assistant Product Manager | Daraz | June 2021 – January 2022
-• Contributed to the Multi-Language Marketplace Expansion project, enabling localization for 3 new languages and increasing market penetration by 15%
-• Assisted in the development of recommendation algorithms that boosted cross-selling revenue by 18%
-• Performed A/B testing on 10+ product features, optimizing user experience and conversion rates
-• Supported the launch of 5 new product categories, contributing to a 12% increase in overall GMV
-
-Product Associate | Khaadi | August 2020 – May 2021
-• Supported the Digital Transformation initiative, helping migrate 60% of offline processes to digital platforms
-• Assisted in the development of inventory management systems that reduced stockouts by 25%
-• Conducted user research and usability testing for e-commerce platform improvements
-• Contributed to the launch of omnichannel customer experience features
-
-Freelance Product Consultant | Various Clients | 2019 – 2020
-• Provided product strategy consultation for 5+ startups in fintech and e-commerce sectors
-• Helped clients define product roadmaps and go-to-market strategies
-• Conducted market analysis and competitive research for product positioning
-
-CORE SKILLS:
-• AI Product Development
-• Agile Methodologies (Scrum, Kanban)
-• Data Analytics & KPI Tracking
-• User Research & Testing
-• Cross-functional Team Leadership
-• Product Strategy & Roadmapping
-• Market Research & Analysis
-• Stakeholder Management
-
-EDUCATION:
-• Project Management Professional (PMP) | Project Management Institute | 2023
-• Master of Business Administration (MBA) | Institute of Business Administration (IBA), Karachi | 2020
-• Bachelor of Business Administration (BBA) | Institute of Business Administration (IBA), Karachi | 2018
-
-Please answer questions about Hassaan's background, experience, skills, and how he might fit various roles. If someone asks non-professional questions or says things like "hello" or "hi", politely redirect them to ask about Hassaan's professional background.
-
-For role-fit questions, evaluate how Hassaan's experience aligns with the requirements and provide specific examples from his background.`
-          },
-          {
-            role: 'user',
-            content: message
-          }
-        ],
-        max_tokens: 500,
-        temperature: 0.7,
-      }),
+      body: JSON.stringify(requestBody)
     });
 
-    console.log('OpenAI response status:', response.status);
+    console.log('OpenAI API response status:', response.status);
+    console.log('OpenAI API response headers:', Object.fromEntries(response.headers.entries()));
 
     if (!response.ok) {
       const errorText = await response.text();
-      console.error('OpenAI API error:', response.status, errorText);
-      throw new Error(`OpenAI API error: ${response.status} - ${errorText}`);
+      console.error('OpenAI API error response:', errorText);
+      
+      let errorMessage = 'OpenAI API error occurred';
+      let statusCode = response.status;
+      
+      try {
+        const errorData = JSON.parse(errorText);
+        errorMessage = errorData.error?.message || errorMessage;
+        
+        // Handle specific error types
+        if (statusCode === 429) {
+          if (errorMessage.includes('quota')) {
+            errorMessage = 'OpenAI API quota exceeded. Please check your billing and usage limits.';
+          } else if (errorMessage.includes('rate limit')) {
+            errorMessage = 'OpenAI API rate limit exceeded. Please try again in a few minutes.';
+          } else {
+            errorMessage = 'OpenAI API temporarily unavailable due to high demand. Please try again later.';
+          }
+        } else if (statusCode === 401) {
+          errorMessage = 'Invalid OpenAI API key. Please check your configuration.';
+        } else if (statusCode === 403) {
+          errorMessage = 'Access denied. Please check your OpenAI API permissions.';
+        }
+      } catch (parseError) {
+        console.error('Error parsing OpenAI error response:', parseError);
+      }
+
+      return res.status(statusCode).json({ 
+        error: errorMessage,
+        details: errorText,
+        statusCode: statusCode
+      });
     }
 
     const data = await response.json();
-    console.log('OpenAI response received successfully');
-    
-    const reply = data.choices[0].message.content;
+    console.log('OpenAI API response data received');
 
-    res.status(200).json({ reply });
+    if (!data.choices || !data.choices[0] || !data.choices[0].message) {
+      console.error('Invalid response structure from OpenAI:', data);
+      return res.status(500).json({ error: 'Invalid response from OpenAI API' });
+    }
+
+    const answer = data.choices[0].message.content;
+    console.log('Successfully processed query, returning response');
+
+    res.status(200).json({ answer });
+
   } catch (error) {
-    console.error('Error details:', error);
-    res.status(500).json({ 
-      error: 'Internal server error', 
-      details: error.message,
-      stack: error.stack 
+    console.error('Error in API handler:', error);
+    console.error('Error stack:', error.stack);
+    
+    let errorMessage = 'Internal server error';
+    let statusCode = 500;
+    
+    if (error.message.includes('fetch')) {
+      errorMessage = 'Network error connecting to OpenAI API';
+    } else if (error.message.includes('timeout')) {
+      errorMessage = 'Request timeout - please try again';
+    }
+    
+    res.status(statusCode).json({ 
+      error: errorMessage,
+      details: error.message 
     });
   }
 }
