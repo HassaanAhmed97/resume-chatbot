@@ -55,7 +55,7 @@ const ChatInterface = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 p-4">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 p-4 font-sans">
       <div className="max-w-4xl mx-auto">
         {/* Header */}
         <div className="text-center mb-8">
@@ -71,7 +71,7 @@ const ChatInterface = () => {
         </div>
 
         {/* Chat Container */}
-        <div className="bg-white rounded-lg shadow-xl p-6 h-96 flex flex-col">
+        <div className="bg-white rounded-lg shadow-xl p-6 h-[36rem] flex flex-col">
           {/* Messages Area */}
           <div className="flex-1 overflow-y-auto mb-4 space-y-4">
             {messages.map((message, index) => (
