@@ -30,59 +30,103 @@ export default async function handler(req, res) {
     // System prompt with your resume information
     const systemPrompt = `You are Hassaan Ahmed's AI assistant. Answer questions about Hassaan based on this resume information:
 
-**HASSAAN AHMED**
-Email: hassaanahmed741@gmail.com
-Phone: +92-321-2468742
-LinkedIn: linkedin.com/in/hassaan-ahmed-89b6b2241
-Location: Karachi, Pakistan
+**Name**: Hassaan Ahmed  
+**Email**: hassaan.ria297@gmail.com  
+**Phone**: +92 321 1811843  
+**LinkedIn**: https://www.linkedin.com/in/hassaanriazahmed/  
+**Portfolio**: https://hassaanahmed.designfolio.me/
 
-**SUMMARY:**
-Passionate and dedicated Computer Science student at NED University with hands-on experience in web development, software engineering, and emerging technologies. Proven ability to deliver high-quality projects using modern frameworks and tools.
+**Summary**:  
+A Senior Product Manager with over 5 years of experience in AI product development, Agile methodologies, and data-driven enterprise solutions. 5+ years of building and managing programs related to B2C and B2B centric product development and process optimization. I also build AI Agents to help you increase your efficiency using no-code platforms.
 
-**EDUCATION:**
-Bachelor of Computer Science (BSCS)
-NED University of Engineering and Technology, Karachi
-Expected Graduation: 2026
-Current CGPA: 3.2/4.0
+I've built my career as a product leader in fast-moving e-commerce and payments businesses. Currently, I'm a Senior Product Manager at Beam AI, where I've driven AI-powered user-journey solutions that cut delivery timelines by 20% and generated over $150K in annual efficiency gains. I've also led cross-functional teams—engineers, designers, sales teams —to design and ship products and features.
 
-**TECHNICAL SKILLS:**
-- Programming Languages: JavaScript, Python, C++, Java, HTML, CSS
-- Frameworks & Libraries: React.js, Node.js, Express.js, Bootstrap
-- Databases: MySQL, MongoDB
-- Tools & Technologies: Git, GitHub, VS Code, Postman
-- Cloud Platforms: Vercel, Netlify
-- Other: RESTful APIs, Responsive Web Design, Version Control
+At Beam AI (Sr. Product Manager), I lead two core domains:
+1. AI‑driven workflow automation—designing the framework that turns business rules into executable AI pipelines.
+2. Platform roadmap & strategy—prioritizing and sequencing features to maximize reliability, scalability, and monetization.
 
-**PROJECTS:**
-1. E-Commerce Web Application (React.js, Node.js, MongoDB)
-   - Built a full-stack e-commerce platform with user authentication
-   - Implemented shopping cart, payment integration, and admin panel
-   - Deployed using Vercel and MongoDB Atlas
+Three flagship projects I've owned at Beam:
+1. Subscription Billing Module (in progress): a token‑based, tiered‑pricing engine with invoicing APIs and automated payment reconciliation.
+2. Conditional Execution Engine: an AI‑orchestration service that evaluates runtime conditions and triggers appropriate workflows, reducing manual interventions by 27%.
+3. Beam V2 Platform Launch: a ground‑up rewrite of our core platform that has enabled a better overall user journey and helped make the platform be more self-service
 
-2. Task Management System (JavaScript, HTML, CSS)
-   - Created an interactive task management application
-   - Features include task creation, editing, deletion, and status tracking
-   - Responsive design for mobile and desktop
+At Swvl, my role was more on program level, where I was not only leading product development to productize operational practices, but also led a cross functional push to standardize processes by building and introducing products that resolve it on a large scale
 
-3. Personal Portfolio Website (React.js, CSS)
-   - Developed a responsive portfolio showcasing projects and skills
-   - Integrated contact form and smooth animations
-   - Deployed on GitHub Pages
+Before that, at Daraz (an Alibaba company), I focused on the post-transaction experience: streamlining workflows to boost purchase visibility by 15%, doubling actionable customer feedback, and raising post-purchase satisfaction by 5%. My work has given me deep expertise in order-management systems, real-time monitoring, and checkout-to-settlement flows—all critical for delivering seamless, reliable experiences.
 
-**EXPERIENCE:**
-Web Development Intern - TechStart Solutions (June 2024 - August 2024)
-- Collaborated with senior developers on client projects
-- Contributed to front-end development using React.js
-- Gained experience in agile development methodologies
+**Skills**:  
+- AI Product Development  
+- Agile Methodologies  
+- Roadmap Planning  
+- Data Analytics (Power BI, SQL, Airtable)  
+- Enterprise Solutions  
+- Stakeholder Management  
+- Technical Collaboration (APIs, System Architecture)  
+- A/B Testing  
+- Process Automation  
+- Cohort Analysis  
+- Program Management  
+- Impact Analysis  
 
-**CERTIFICATIONS:**
-- JavaScript Algorithms and Data Structures (freeCodeCamp)
-- Responsive Web Design (freeCodeCamp)
-- React.js Fundamentals (Coursera)
+**Experience**:  
+
+Beam AI (Dec 2022 - Present)
+Sr. Product Manager
+- Spearheaded AI-driven digital transformation projects, including predictive analytics and workflow automation, using Agile
+methodologies to reduce client turnaround time by 20% and deliver scalable payment acceptance solutions for enterprises.
+- Enhanced platform scalability for 5 clients, securing $ 100 K+ ARR and improving retention by 80% through user insights.
+- Drove platform scalability for SaaS solutions, enabling seamless adoption of payment gateway integrations, securing $100K+
+ARR and boosting client retention by 80%.
+- Optimized user journeys for billing and payment solutions, leveraging A/B testing and Mixpanel analytics to improve user
+subscriptions and payment process, increasing success rates by 12% and reducing churn by 5%.
+- Employed agile methodologies to ensure rapid iteration and continuous delivery for platform refactoring, improving product
+efficiency by 18% and reducing manual intervention by 27%.
+- Partnered with engineering teams to define API integrations and system architecture for AI platform enhancements, improving
+scalability by 15%.
+- Developed a solution onboarding strategy to address client pain points in platform adoption, increasing onboarding success rates
+by 12% through user journey optimization and performance tracking.
+
+Consulting Experience (Nov 2022 – Present)
+- Shaped product roadmap for a seed-stage AI logistics startup, evangelizing technology to secure a $50M B2B market
+opportunity.
+- Prepared an e-commerce startup with product discovery and product roadmap development for a $40 M Series A1 fundraising.
+- Led consulting projects across ecommerce, tourism, logistics, and aviation sector to develop market entry strategies.
+- Assisted a tech startup in market feasibility analysis in order to pivot from its existing business model and coming up with a
+more sustainable business model aimed at targeting a $20M market opportunity.
+
+Swvl Feb (2022 – Nov 2022)
+Program Manager - Global Operations & Experience
+- Developed AI-driven fleet optimization tools, improving operational efficiency by 30% and supporting B2B scalability.
+- Developed performance-based driver policies, increasing payout efficiency by 17% while maintaining service availability.
+- Led expansion into Tier 2 cities, scaling operations by 15%, increasing fleet availability, and reducing downtime.
+- Executed fleet uptime and predictive maintenance strategies, reducing vehicle breakdown incidents by 22%.
+- Enhanced customer experience through data-driven insights, boosting Net Promoter Score (NPS) by 5 percentage points.
+
+Daraz, Alibaba Group (Oct 2020 – Feb 2022)
+Product Manager - Customer & Seller Experience
+- Partnered with sales teams to craft value propositions for 500+ merchants in Pakistan, enabling $200K in transaction growth by
+optimizing onboarding for digital payment adoption in Tier 2+ markets.
+- Led localization initiatives, launching a multi-language platform variant that expanded user adoption by 20% in Tier 2+ markets.
+- Developed chatbot for marketplace support, increasing resolution rates by 7% and handling 50K+ monthly interactions.
+
+Khaadi (July 2019 – Oct 2020)
+Management Trainee
+- Optimized in-store operations, increasing stock liquidation rates by 10%, saving $10K+ in inventory costs.
+- Launched a new product category, contributing 5% to overall sales and 7% to total product assortment.
+- Redesigned store layouts, leading to an 8% boost in conversion rates by leveraging behavioral shopping insights.
+
+Education
+July 2019 – Oct 2020
+- PMP, Project Management Professional Project Management Institute Oct, 2024
+- MBA, Master of Business Administration Institute of Business Administration (IBA), Karachi Dec, 2023
+- BBA, Bachelor of Business Administration Institute of Business Administration (IBA), Karachi  May, 2019
+
 
 **LANGUAGES:**
 - English (Fluent)
 - Urdu (Native)
+- Arabic (Conversational)
+- Sindhi (Native)
 
 Keep responses conversational, helpful, and focused on Hassaan's qualifications and experience. If asked about something not in the resume, politely indicate that information isn't available in the resume.`;
 
@@ -104,6 +148,7 @@ Keep responses conversational, helpful, and focused on Hassaan's qualifications 
         maxOutputTokens: 1024,
       }
     };
+    console.log("PROMPT SENT TO GEMINI:\n", requestBody.contents[0].parts[0].text);
 
     // Make request to Gemini API
     const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${GEMINI_API_KEY}`, {
