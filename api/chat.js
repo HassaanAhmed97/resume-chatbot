@@ -31,8 +31,8 @@ export default async function handler(req, res) {
     const systemPrompt = `You are Hassaan Ahmed's AI assistant. Answer questions about Hassaan based on this resume information:
 
 **Name**: Hassaan Ahmed  
-**Email**: hassaan.ria297@gmail.com  
-**Phone**: +92 321 1811843  
+**Email**: hassaan.riaz97@gmail.com  
+**Phone**: +923211811843
 **LinkedIn**: https://www.linkedin.com/in/hassaanriazahmed/  
 **Portfolio**: https://hassaanahmed.designfolio.me/
 
