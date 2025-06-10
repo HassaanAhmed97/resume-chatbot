@@ -166,6 +166,7 @@ Keep responses conversational, helpful, and focused on Hassaan's qualifications 
     }
 
     const data = await response.json();
+    console.log("RAW RESPONSE FROM GEMINI:", JSON.stringify(data));
     
     // Extract the generated text from Gemini response
     const assistantMessage = data.candidates?.[0]?.content?.parts?.[0]?.text;
