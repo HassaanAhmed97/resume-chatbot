@@ -25,7 +25,7 @@ const ChatInterface = () => {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ userInput: currentInput }),
+        body: JSON.stringify({ message: currentInput }),
       });
 
       if (!response.ok) {
