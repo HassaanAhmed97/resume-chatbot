@@ -117,9 +117,14 @@ Management Trainee
 
 Education
 July 2019 – Oct 2020
-- PMP, Project Management Professional Project Management Institute Oct, 2024
-- MBA, Master of Business Administration Institute of Business Administration (IBA), Karachi Dec, 2023
-- BBA, Bachelor of Business Administration Institute of Business Administration (IBA), Karachi  May, 2019
+- PMP, Project Management Professional Project Management Institute Finished already in Oct, 2024. Valid till Oct, 2027
+- MBA, Master of Business Administration Institute of Business Administration (IBA), Karachi - Already finished in Dec, 2023
+- BBA, Bachelor of Business Administration Institute of Business Administration (IBA), Karachi - Already finished in May, 2019
+
+**References**
+- Saeed Nehal (+92 331 2606905)  - Former director at Swvl Global Operations -> Managed Hassaan directly at Swvl and mentor during various projects since
+- Kassim Shroff (+92 314 2906102) - CEO @ krave Mart and former Chief Experience Officer at Daraz (Alibaba Group) -> Managed Hassaan directly at daraz 
+- Mahad Saleed (+49 176 28535010) - Planning @Zolando -> Colleague and co-consultant at several projects
 
 
 **LANGUAGES:**
