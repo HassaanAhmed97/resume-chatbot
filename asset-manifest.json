@@ -1,10 +1,10 @@
 {
   "files": {
-    "main.js": "/resume-chatbot/static/js/main.a44b3ce5.js",
+    "main.js": "/resume-chatbot/static/js/main.e7f9d0e0.js",
     "index.html": "/resume-chatbot/index.html",
-    "main.a44b3ce5.js.map": "/resume-chatbot/static/js/main.a44b3ce5.js.map"
+    "main.e7f9d0e0.js.map": "/resume-chatbot/static/js/main.e7f9d0e0.js.map"
   },
   "entrypoints": [
-    "static/js/main.a44b3ce5.js"
+    "static/js/main.e7f9d0e0.js"
   ]
 }
