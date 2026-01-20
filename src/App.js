@@ -8,6 +8,7 @@ const caseStudies = [
     title: 'AI Workflow Automation',
     company: 'Beam AI',
     category: 'AI/SaaS • Enterprise',
+    icon: '🤖',
     hero: 'Scaling AI agent delivery from 0 to 5+ enterprise clients',
     metrics: [
       { value: '3x', label: 'MAU Growth' },
@@ -23,13 +24,15 @@ const caseStudies = [
       'Documented model behavior and trade-offs; defined prompt strategies and guardrails',
     ],
     result: '3x increase in monthly active users, 20% reduction in churn, and 12% improvement in time-to-delivery. Achieved ~15% above-target adoption in first 90 days for enterprise clients.',
-    color: 'from-blue-600 to-indigo-600',
+    color: 'from-blue-500 to-indigo-500',
+    cardBg: 'from-sky-50 via-blue-50 to-indigo-50',
   },
   {
     id: 'fleet-optimization',
     title: 'Real-Time Fleet Optimization',
     company: 'Swvl',
     category: 'Logistics • Operations Tech',
+    icon: '🚐',
     hero: 'Building fleet tracking from scratch for 5,000+ daily rides',
     metrics: [
       { value: '30%', label: 'Efficiency Increase' },
@@ -45,13 +48,15 @@ const caseStudies = [
       'Led multi-workstream implementation of dynamic routing logic across 3 cities',
     ],
     result: '30% operational efficiency improvement, 22% reduction in service failures across 5,000+ daily rides, 60% reduction in scheduling time, and 25% increase in network coverage.',
-    color: 'from-emerald-600 to-teal-600',
+    color: 'from-emerald-500 to-teal-500',
+    cardBg: 'from-emerald-50 via-teal-50 to-cyan-50',
   },
   {
     id: 'urdu-localization',
     title: 'Urdu Localization for Tier-2 Markets',
     company: 'Daraz (Alibaba)',
     category: 'E-commerce • Growth',
+    icon: '🌍',
     hero: 'Translating 100K+ listings to unlock $500K revenue',
     metrics: [
       { value: '$500K', label: 'Revenue Generated' },
@@ -68,12 +73,14 @@ const caseStudies = [
     ],
     result: '7% order volume increase in tier-2 markets, generating approximately $500K in revenue. Successfully proved the business case for regional localization.',
     color: 'from-orange-500 to-amber-500',
+    cardBg: 'from-amber-50 via-orange-50 to-rose-50',
   },
   {
     id: 'intelligent-agent-setup',
     title: 'Intelligent Agent Setup',
     company: 'Beam AI',
     category: 'AI/SaaS • Product',
+    icon: '⚡',
     hero: 'Reducing workflow creation from weeks to hours',
     metrics: [
       { value: '90%', label: 'Fewer Config Errors' },
@@ -89,13 +96,15 @@ const caseStudies = [
       'Introduced "Create a Blank Agent" button to reduce bounce rates by 30%',
     ],
     result: 'Reduced workflow creation time from 2-3 weeks to 2-3 hours, achieved 90% fewer manual configuration errors, and contributed significantly to 3x increase in monthly active users.',
-    color: 'from-violet-600 to-purple-600',
+    color: 'from-violet-500 to-purple-500',
+    cardBg: 'from-violet-50 via-purple-50 to-fuchsia-50',
   },
   {
     id: 'ecommerce-optimization',
     title: 'E-Commerce Platform Optimization',
     company: 'Khaadi',
     category: 'Retail • E-commerce',
+    icon: '🛍️',
     hero: 'Generating $200K monthly revenue through UX improvements',
     metrics: [
       { value: '$200K', label: 'Monthly Revenue Added' },
@@ -112,6 +121,7 @@ const caseStudies = [
     ],
     result: '40% reduction in clicks to purchase, conversion rate increase from 5% to 6.5% generating additional $200K monthly revenue, and 8% average basket size improvement.',
     color: 'from-rose-500 to-pink-500',
+    cardBg: 'from-pink-50 via-rose-50 to-red-50',
   },
 ];
 
@@ -263,7 +273,7 @@ function ChatWidget() {
 // Home Page
 function HomePage() {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 p-4 sm:p-6">
+    <div className="min-h-screen bg-gradient-to-br from-sky-100 via-rose-50 to-emerald-100 p-4 sm:p-6">
       <div className="max-w-4xl mx-auto pt-8 sm:pt-12">
         {/* Header */}
         <div className="text-center mb-10">
@@ -302,19 +312,23 @@ function HomePage() {
               <Link
                 key={study.id}
                 to={`/case-study/${study.id}`}
-                className="group bg-white/70 backdrop-blur-sm rounded-2xl p-6 border border-white/50 hover:shadow-xl hover:shadow-gray-200/50 transition-all hover:-translate-y-1"
+                className={`group bg-gradient-to-r ${study.cardBg} backdrop-blur-sm rounded-2xl p-6 border border-white/80 hover:shadow-xl hover:shadow-gray-200/50 transition-all hover:-translate-y-1 hover:scale-[1.02]`}
               >
-                <div className="flex items-start justify-between gap-4">
+                <div className="flex items-start gap-4">
+                  <div className="text-3xl">{study.icon}</div>
                   <div className="flex-1">
-                    <span className="text-sm text-gray-500">{study.category}</span>
+                    <div className="flex items-center justify-between">
+                      <span className="text-sm text-gray-500 font-medium">{study.company}</span>
+                      <span className="text-xs text-gray-400">{study.category}</span>
+                    </div>
                     <h3 className="text-xl font-semibold text-gray-900 mt-1 group-hover:text-blue-600 transition-colors">
                       {study.title}
                     </h3>
-                    <p className="text-gray-600 mt-2">{study.hero}</p>
-                    <div className="flex gap-4 mt-4">
+                    <p className="text-gray-600 mt-2 text-sm">{study.hero}</p>
+                    <div className="flex flex-wrap gap-3 mt-4">
                       {study.metrics.slice(0, 3).map((metric, idx) => (
-                        <div key={idx}>
-                          <span className={`text-lg font-bold bg-gradient-to-r ${study.color} bg-clip-text text-transparent`}>
+                        <div key={idx} className="bg-white/60 rounded-lg px-3 py-1.5">
+                          <span className={`text-base font-bold bg-gradient-to-r ${study.color} bg-clip-text text-transparent`}>
                             {metric.value}
                           </span>
                           <span className="text-xs text-gray-500 ml-1">{metric.label}</span>
@@ -322,8 +336,8 @@ function HomePage() {
                       ))}
                     </div>
                   </div>
-                  <div className="text-gray-400 group-hover:text-blue-600 transition-colors">
-                    <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <div className="text-gray-300 group-hover:text-blue-500 transition-colors self-center">
+                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                     </svg>
                   </div>
@@ -350,7 +364,7 @@ function CaseStudyPage() {
 
   if (!study) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 flex items-center justify-center">
+      <div className="min-h-screen bg-gradient-to-br from-sky-100 via-rose-50 to-emerald-100 flex items-center justify-center">
         <div className="text-center">
           <h1 className="text-2xl font-bold text-gray-900 mb-4">Case study not found</h1>
           <Link to="/" className="text-blue-600 hover:underline">← Back to home</Link>
@@ -360,7 +374,7 @@ function CaseStudyPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 p-4 sm:p-6">
+    <div className="min-h-screen bg-gradient-to-br from-sky-100 via-rose-50 to-emerald-100 p-4 sm:p-6">
       <div className="max-w-3xl mx-auto pt-8">
         {/* Back Button */}
         <button
