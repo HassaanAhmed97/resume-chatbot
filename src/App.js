@@ -266,7 +266,7 @@ function ChatWidget() {
     try {
       const chatUrl = process.env.NODE_ENV === 'development'
         ? '/api/chat'
-        : 'https://personal-hassaan.vercel.app/api/chat';
+        : 'https://resume-chatbot-three.vercel.app/api/chat';
       const response = await fetch(chatUrl, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
