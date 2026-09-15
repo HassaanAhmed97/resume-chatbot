@@ -1,6 +1,6 @@
 {
-  "buildCommand": "",
-  "outputDirectory": "",
+  "buildCommand": "PUBLIC_URL= npm run build",
+  "outputDirectory": "build",
   "functions": {
     "api/chat.js": {
       "maxDuration": 30
@@ -10,6 +10,10 @@
     {
       "source": "/api/(.*)",
       "destination": "/api/$1"
+    },
+    {
+      "source": "/((?!api/).*)",
+      "destination": "/index.html"
     }
   ]
 }
