@@ -2,8 +2,11 @@
 set -euo pipefail
 
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
-# shellcheck source=load-github-token.sh
-source "$ROOT/scripts/load-github-token.sh"
+
+if [[ -z "${GITHUB_TOKEN:-}" ]]; then
+  # shellcheck source=load-github-token.sh
+  source "$ROOT/scripts/load-github-token.sh"
+fi
 
 RESP=$(curl -s -H "Authorization: Bearer $GITHUB_TOKEN" https://api.github.com/user)
 LOGIN=$(echo "$RESP" | grep -o '"login"[[:space:]]*:[[:space:]]*"[^"]*"' | head -1 | sed 's/.*"\([^"]*\)"$/\1/')
