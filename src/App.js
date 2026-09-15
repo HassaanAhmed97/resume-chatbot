@@ -471,7 +471,7 @@ function HomePage() {
             Group Product Manager — AI Products
           </p>
           <p className="text-slate-500 mt-2 max-w-2xl mx-auto leading-relaxed">
-            7 years building AI and operations products — built platform serving 50+ enterprise clients; led end-to-end deployments across financial services, HR, and customer experience.
+            7 years building AI and operations products — built Agentic AI platform serving 50+ enterprise clients; led end-to-end deployments across financial services, HR, and customer experience.
           </p>
           <div className="flex flex-wrap items-center justify-center gap-3 mt-6">
             <a
