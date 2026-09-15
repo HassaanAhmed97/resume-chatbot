@@ -20,7 +20,11 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "predeploy": "PUBLIC_URL=/resume-chatbot npm run build",
-    "deploy": "gh-pages -d build"
+    "deploy": "gh-pages -d build",
+    "validate:token": "bash scripts/validate-github-token.sh",
+    "push:main": "bash scripts/push-main.sh",
+    "deploy:github": "bash scripts/deploy-github-pages.sh",
+    "deploy:all": "npm run validate:token && npm run push:main && npm run deploy:github"
   },
   "eslintConfig": {
     "extends": [
