@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect, useLayoutEffect } from 'react';
 import { HashRouter as Router, Routes, Route, Link, useParams, useNavigate, useLocation } from 'react-router-dom';
+import ReactMarkdown from 'react-markdown';
 
 const PAGE_BG = 'min-h-screen bg-slate-50';
 const RESUME_URL = `${process.env.PUBLIC_URL || ''}/Hassaan-Ahmed-Resume.pdf`;
@@ -199,6 +200,23 @@ const caseStudies = [
 const MIN_INPUT_HEIGHT = 72; // ~2 lines default
 const MAX_INPUT_HEIGHT = 168; // ~6 lines before internal scroll
 
+const assistantMarkdownComponents = {
+  p: ({ children }) => <p className="mb-2 last:mb-0">{children}</p>,
+  strong: ({ children }) => <strong className="font-semibold">{children}</strong>,
+  em: ({ children }) => <em className="italic">{children}</em>,
+  ul: ({ children }) => <ul className="list-disc pl-4 mb-2 last:mb-0 space-y-1">{children}</ul>,
+  ol: ({ children }) => <ol className="list-decimal pl-4 mb-2 last:mb-0 space-y-1">{children}</ol>,
+  li: ({ children }) => <li className="leading-relaxed">{children}</li>,
+};
+
+function AssistantMessage({ content }) {
+  return (
+    <div className="text-sm leading-relaxed [&>*:last-child]:mb-0">
+      <ReactMarkdown components={assistantMarkdownComponents}>{content}</ReactMarkdown>
+    </div>
+  );
+}
+
 function ChatWidget() {
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState('');
@@ -362,7 +380,11 @@ function ChatWidget() {
                 <div className={`max-w-[85%] ${message.role === 'user'
                   ? 'bg-slate-800 text-white rounded-2xl rounded-br-md'
                   : 'bg-slate-100 text-slate-800 rounded-2xl rounded-bl-md'} px-4 py-3`}>
-                  <p className="text-sm leading-relaxed whitespace-pre-wrap">{message.content}</p>
+                  {message.role === 'assistant' ? (
+                    <AssistantMessage content={message.content} />
+                  ) : (
+                    <p className="text-sm leading-relaxed whitespace-pre-wrap">{message.content}</p>
+                  )}
                 </div>
               </div>
             ))}
