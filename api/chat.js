@@ -44,7 +44,7 @@ export default async function handler(req, res) {
             {
               parts: [
                 {
-                  text: `${systemPrompt}\n\n---\n\nUser question: ${message}\n\nProvide a helpful, conversational response based on Hassaan's profile above.`
+                  text: `${systemPrompt}\n\n---\n\nUser question: ${message}\n\nAnswer accurately based on Hassaan's profile. For role-fit questions, be honest about strong, partial, and weak fits — do not oversell.`
                 }
               ]
             }
