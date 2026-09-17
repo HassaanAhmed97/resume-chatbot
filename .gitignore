@@ -5,3 +5,10 @@ build/
 .vercel/
 .vercel
 .env*
+
+# macOS & workspace duplicates (canonical assets live in public/)
+.DS_Store
+/Hassaan Ahmed-Resume.pdf
+/beam_logo.jpg
+/daraz logo.png
+/vercel 2.json
