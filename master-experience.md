@@ -3,7 +3,7 @@
 > **Purpose**: Single source of truth for all resume-relevant experience, skills, and achievements.
 > Everything that goes on a resume, on LinkedIn, or into the AI resume chatbot is generated from this file.
 > If a fact is not in this file, it does not go on an application.
-> **Last updated**: 2026-09-15
+> **Last updated**: 2026-10-13
 
 ---
 
@@ -38,6 +38,7 @@
 - Conversational execution layer taken from kickoff to beta in ~4 weeks, covering 5 shop workflows in natural language: appointment booking, repair order creation and editing, parts lookup, marketing campaign creation. Live with 50 shops; those tasks completing ~10% faster than through the existing UI
 - Runs the 50-shop beta directly — success criteria, go-wide gates, weekly read on drop-off points. Field feedback sets production scope rather than the original spec
 - Inherited an already-shipped, underperforming AI receptionist. Rebuilt the intent set against a sample of real production calls; recognition accuracy ~70% → mid-80s, widening the range of calls handled without a human; inbound response time down ~5%
+- Led product decisions on search and discovery within the third-party parts-ordering integration — what results to surface for a given query and in what order, balancing relevance against real-world parts availability — cutting time-to-find-and-order by ~20%
 
 ### Framing notes
 - Short tenure. Keep to 3–4 lines on any resume. A long entry invites the "why are you moving already" question; a short one doesn't.
@@ -289,6 +290,9 @@ LinkedIn outbound sequencing (HubSpot → HeyReach) · client project setup (Lin
 | Incentive / commercial policy design | Swvl driver bonus & deduction policy across 3 markets |
 | PM leadership / coaching | 2 PMs at Beam — hiring, quality bar, rituals |
 | Compliance / guardrails | Beam guardrails, confidence policy, hallucination detection, BPO compliance agent |
+| Search / discovery / information retrieval / relevance ranking | Beam RAG retrieval architecture (chunking, context-injection, eval-driven relevance tuning across 50+ agent graphs); AutoLeap parts-ordering search/discovery decisions (~20% faster time-to-find-and-order); Daraz merchant ranking & seller visibility (100K+ SKUs, +~20% top-seller visibility) |
+| Catalog / merchandising / ranking | Daraz 100K+ SKU catalog, attribute standardization, merchant ranking, seller-visibility boosting |
+| Shared/platform PM serving multiple business lines with competing priorities | Beam's single platform serving finance/HR/CX verticals simultaneously — same stakeholder-conflict shape as a shared cross-vertical service |
 
 ---
 
