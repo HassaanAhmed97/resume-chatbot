@@ -1,3 +1,3 @@
 # Moved
 
-Hassaan Ahmed's resume chatbot now lives at https://resume-chatbot-three.vercel.app
+Hassaan Ahmed's resume chatbot now lives at https://hassaan-ahmed-resume-bot.vercel.app
